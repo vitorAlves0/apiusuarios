@@ -1,10 +1,8 @@
 FROM maven:3.9.6-amazoncorretto-17 as build
-WORKDIR /app
 COPY . .
-RUN mvn clean package -X -DskipTests
+RUN mvn clean package -DskipTests
 
-FROM openjdk:17-ea-10-jdk-slim
-WORKDIR /app
-COPY --from=build /target/*.jar ./spring-deskcurso.jar
+FROM openjdk:17.0.1-jdk-slim
+COPY --from=build /target/apiusuarios-0.0.1-SNAPSHOT.jar apiusuarios-0.0.1-SNAPSHOT.jar
 EXPOSE 8080
-ENTRYPOINT java -jar spring-deskcurso.jar
+ENTRYPOINT ["java","-jar","apiusuarios-0.0.1-SNAPSHOT.jar"]
